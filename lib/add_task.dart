@@ -59,7 +59,7 @@ class AppState extends State<AddTaskScreen> {
           key: key,
           child: Column(
             children: [
-              SizedBox(height: 10),
+             const SizedBox(height: 10),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Enter Task Title',
@@ -75,7 +75,7 @@ class AppState extends State<AddTaskScreen> {
                   title = value;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Enter Task Description',
@@ -91,7 +91,7 @@ class AppState extends State<AddTaskScreen> {
                   des = value;
                 },
               ),
-              SizedBox(height: 10),
+             const  SizedBox(height: 10),
 
               // Date picker field
               TextFormField(
@@ -110,7 +110,7 @@ class AppState extends State<AddTaskScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               // Time picker field
               TextFormField(
@@ -129,14 +129,14 @@ class AppState extends State<AddTaskScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               // DropdownButton for urgency levels
               DropdownButtonFormField<String>(
                 value: selectedItem,
-                decoration: InputDecoration(
-                  labelText: 'Task Urgency',
-                  border: OutlineInputBorder(),
+                decoration: const InputDecoration(
+                  labelText:  'Task Urgency',
+                  border:  OutlineInputBorder(),
                 ),
                 items: ['Urgent', 'Less Urgent', 'Least Urgent'].map((item) {
                   return DropdownMenuItem(
@@ -150,20 +150,52 @@ class AppState extends State<AddTaskScreen> {
                   });
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Submit button
               ElevatedButton(
                 onPressed: () {
-                  if (key.currentState!.validate()) {
-                    key.currentState!.save();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Task Added Successfully')),
-                    );
-                  }
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Confirm Submission'),
+                        content: const Text('Are you sure you want to submit the task?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              // Dismiss the dialog (Cancel action)
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Cancel'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              // If validation is successful, save the form
+                              if (key.currentState!.validate()) {
+                                key.currentState!.save();
+
+                                // Close the dialog
+                                Navigator.of(context).pop();
+
+                                // Show snackbar message after successful submission
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Task Added Successfully')),
+                                );
+                              }
+                            },
+                            child: Text('Save'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
                 child: const Text('Save'),
               ),
+
+
+
             ],
           ),
         ),
