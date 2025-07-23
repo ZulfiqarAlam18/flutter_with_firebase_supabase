@@ -1,4 +1,3 @@
-
 /// lib/auth/update_student_screen.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -24,7 +23,23 @@ class UpdateStudentScreen extends StatelessWidget {
             itemBuilder: (c, i) {
               final s = list[i];
               return ListTile(
-                leading: Image.network(s.imageUrl, width: 50.w, height: 50.h, fit: BoxFit.cover),
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    s.imageUrl,
+                    width: 50.w,
+                    height: 50.h,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: 50.w,
+                        height: 50.h,
+                        color: Colors.grey[300],
+                        child: Icon(Icons.person, color: Colors.grey[600]),
+                      );
+                    },
+                  ),
+                ),
                 title: Text(s.name),
                 subtitle: Text('Roll: ${s.roll}'),
                 trailing: IconButton(
@@ -66,13 +81,38 @@ class __EditDialogState extends State<_EditDialog> {
   }
 
   void save() async {
-    await StudentController.instance.updateStudent(
-      widget.student.id,
-      nameCtrl.text.trim(),
-      rollCtrl.text.trim(),
-      _image,
-    );
-    Get.back();
+    if (nameCtrl.text.trim().isEmpty || rollCtrl.text.trim().isEmpty) {
+      Get.snackbar(
+        "Error",
+        "Please fill all fields",
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    try {
+      await StudentController.instance.updateStudent(
+        widget.student.id,
+        nameCtrl.text.trim(),
+        rollCtrl.text.trim(),
+        _image,
+      );
+      Get.snackbar(
+        "Success",
+        "Student updated successfully",
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+      Get.back();
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Failed to update student: $e",
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
+    }
   }
 
   @override
@@ -82,8 +122,14 @@ class __EditDialogState extends State<_EditDialog> {
       content: SingleChildScrollView(
         child: Column(
           children: [
-            TextField(controller: nameCtrl, decoration: InputDecoration(labelText: 'Name')),
-            TextField(controller: rollCtrl, decoration: InputDecoration(labelText: 'Roll')),
+            TextField(
+              controller: nameCtrl,
+              decoration: InputDecoration(labelText: 'Name'),
+            ),
+            TextField(
+              controller: rollCtrl,
+              decoration: InputDecoration(labelText: 'Roll'),
+            ),
             SizedBox(height: 10.h),
             _image == null
                 ? TextButton(onPressed: pickImage, child: Text('Change Image'))
@@ -98,4 +144,3 @@ class __EditDialogState extends State<_EditDialog> {
     );
   }
 }
-

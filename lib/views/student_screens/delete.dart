@@ -22,7 +22,23 @@ class DeleteStudentScreen extends StatelessWidget {
             itemBuilder: (c, i) {
               final s = list[i];
               return ListTile(
-                leading: Image.network(s.imageUrl, width: 50.w, height: 50.h, fit: BoxFit.cover),
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    s.imageUrl,
+                    width: 50.w,
+                    height: 50.h,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: 50.w,
+                        height: 50.h,
+                        color: Colors.grey[300],
+                        child: Icon(Icons.person, color: Colors.grey[600]),
+                      );
+                    },
+                  ),
+                ),
                 title: Text(s.name),
                 subtitle: Text('Roll: ${s.roll}'),
                 trailing: IconButton(

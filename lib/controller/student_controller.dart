@@ -1,26 +1,23 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../models/student_model.dart';
+import '../services/storage_service.dart';
 
 class StudentController extends GetxController {
   static StudentController instance = Get.find();
 
   final _db = FirebaseFirestore.instance;
-  final _storage = FirebaseStorage.instance;
 
   Stream<List<Student>> get students => _db
       .collection('students')
       .snapshots()
       .map((snap) => snap.docs.map(Student.fromDoc).toList());
 
+  /// Upload image to Supabase Storage and get public URL
   Future<String> _uploadImage(File file, String id) async {
-    final ref = _storage.ref().child('students/$id.jpg');
-    await ref.putFile(file);
-    return await ref.getDownloadURL();
+    return await StorageService.uploadImage(file, '$id.jpg');
   }
 
   Future<void> addStudent(String name, String roll, File image) async {
@@ -35,22 +32,24 @@ class StudentController extends GetxController {
   }
 
   Future<void> deleteStudent(String id) async {
+    // Delete from Firestore first
     await _db.collection('students').doc(id).delete();
-    await _storage.ref().child('students/$id.jpg').delete();
+
+    // Then delete from Supabase storage
+    await StorageService.deleteImage('$id.jpg');
   }
 
   Future<void> updateStudent(
-      String id, String name, String roll, File? image) async {
+    String id,
+    String name,
+    String roll,
+    File? image,
+  ) async {
     String? url;
     if (image != null) {
       url = await _uploadImage(image, id);
     }
-    final data = {
-      'name': name,
-      'roll': roll,
-      if (url != null) 'imageUrl': url,
-    };
+    final data = {'name': name, 'roll': roll, if (url != null) 'imageUrl': url};
     await _db.collection('students').doc(id).update(data);
   }
 }
-
