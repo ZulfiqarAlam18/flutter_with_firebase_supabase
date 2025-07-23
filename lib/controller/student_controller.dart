@@ -10,10 +10,24 @@ class StudentController extends GetxController {
 
   final _db = FirebaseFirestore.instance;
 
-  Stream<List<Student>> get students => _db
-      .collection('students')
-      .snapshots()
-      .map((snap) => snap.docs.map(Student.fromDoc).toList());
+  Stream<List<Student>> get students {
+    return _db
+        .collection('students')
+        .snapshots()
+        .map((snap) {
+          final students = snap.docs.map((doc) {
+            try {
+              return Student.fromDoc(doc);
+            } catch (e) {
+              print('❌ Error parsing student document ${doc.id}: $e');
+              print('📄 Document data: ${doc.data()}');
+              rethrow;
+            }
+          }).toList();
+          print('✅ Successfully parsed ${students.length} students');
+          return students;
+        });
+  }
 
   /// Upload image to Supabase Storage and get public URL
   Future<String> _uploadImage(File file, String id) async {
@@ -23,12 +37,15 @@ class StudentController extends GetxController {
   Future<void> addStudent(String name, String roll, File image) async {
     final id = Uuid().v4();
     final url = await _uploadImage(image, id);
-    await _db.collection('students').doc(id).set({
+    
+    final studentData = {
       'id': id,
       'name': name,
-      'roll': roll,
+      'roll': roll,  // Make sure this matches your Firestore field
       'imageUrl': url,
-    });
+    };
+    
+    await _db.collection('students').doc(id).set(studentData);
   }
 
   Future<void> deleteStudent(String id) async {

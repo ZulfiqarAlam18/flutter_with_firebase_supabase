@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../controller/auth_controller.dart';
 import '../../controller/student_controller.dart';
+import '../../debug_screen.dart';
 import '../student_screens/add.dart';
 import '../student_screens/delete.dart';
 import '../student_screens/update.dart';
@@ -67,6 +68,15 @@ class HomeScreen extends StatelessWidget {
               child: Text('Delete Student', style: TextStyle(fontSize: 18.sp)),
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50.h),
+              ),
+            ),
+            SizedBox(height: 15.h),
+            ElevatedButton(
+              onPressed: () => Get.to(() => DebugScreen()),
+              child: Text('🔍 Debug Firestore', style: TextStyle(fontSize: 18.sp)),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50.h),
+                backgroundColor: Colors.orange,
               ),
             ),
           ],

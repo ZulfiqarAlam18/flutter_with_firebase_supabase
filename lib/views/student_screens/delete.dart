@@ -9,12 +9,44 @@ import '../../models/student_model.dart';
 class DeleteStudentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Ensure controller is initialized
+    final controller = Get.put(StudentController());
+    
     return Scaffold(
       appBar: AppBar(title: Text('Delete Student')),
       body: StreamBuilder<List<Student>>(
-        stream: StudentController.instance.students,
+        stream: controller.students,
         builder: (context, snap) {
-          if (!snap.hasData) return Center(child: CircularProgressIndicator());
+          if (snap.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          
+          if (snap.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error, size: 64, color: Colors.red),
+                  SizedBox(height: 16),
+                  Text('Error: ${snap.error}'),
+                ],
+              ),
+            );
+          }
+          
+          if (!snap.hasData || snap.data!.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.school, size: 64, color: Colors.grey),
+                  SizedBox(height: 16),
+                  Text('No students found'),
+                ],
+              ),
+            );
+          }
+          
           final list = snap.data!;
           return ListView.builder(
             padding: EdgeInsets.all(20.w),
@@ -57,9 +89,24 @@ class DeleteStudentScreen extends StatelessWidget {
     Get.defaultDialog(
       title: 'Confirm',
       middleText: 'Delete this student?',
-      onConfirm: () {
-        StudentController.instance.deleteStudent(id);
-        Get.back();
+      onConfirm: () async {
+        try {
+          Get.back(); // Close dialog first
+          await StudentController.instance.deleteStudent(id);
+          Get.snackbar(
+            "Success",
+            "Student deleted successfully",
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+        } catch (e) {
+          Get.snackbar(
+            "Error", 
+            "Failed to delete student: $e",
+            backgroundColor: Colors.redAccent,
+            colorText: Colors.white,
+          );
+        }
       },
       onCancel: () => Get.back(),
     );

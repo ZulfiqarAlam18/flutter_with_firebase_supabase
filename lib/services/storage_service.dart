@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class StorageService {
   static final SupabaseClient _supabase = Supabase.instance.client;
-  static const String bucketName = 'student-images';
+  static const String bucketName = 'student-pics';
 
   /// Upload image to Supabase Storage and return public URL
   static Future<String> uploadImage(File file, String fileName) async {
