@@ -34,9 +34,10 @@ class DebugScreen extends StatelessWidget {
   void testFirestoreConnection() async {
     try {
       print('🔗 Testing Firestore connection...');
-      final snapshot = await FirebaseFirestore.instance.collection('students').get();
+      final snapshot =
+          await FirebaseFirestore.instance.collection('students').get();
       print('✅ Firestore connected! Found ${snapshot.docs.length} documents');
-      
+
       Get.snackbar(
         "Success",
         "Firestore connected! Found ${snapshot.docs.length} documents",
@@ -57,13 +58,14 @@ class DebugScreen extends StatelessWidget {
   void listAllStudents() async {
     try {
       print('📋 Listing all students...');
-      final snapshot = await FirebaseFirestore.instance.collection('students').get();
-      
+      final snapshot =
+          await FirebaseFirestore.instance.collection('students').get();
+
       for (var doc in snapshot.docs) {
         print('📄 Document ID: ${doc.id}');
         print('📄 Document data: ${doc.data()}');
       }
-      
+
       Get.snackbar(
         "Info",
         "Check console for student list (${snapshot.docs.length} found)",
@@ -90,7 +92,7 @@ class DebugScreen extends StatelessWidget {
         'roll': '001',
         'imageUrl': '',
       });
-      
+
       print('✅ Test student added successfully');
       Get.snackbar(
         "Success",

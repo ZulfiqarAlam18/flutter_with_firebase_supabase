@@ -73,7 +73,10 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 15.h),
             ElevatedButton(
               onPressed: () => Get.to(() => DebugScreen()),
-              child: Text('🔍 Debug Firestore', style: TextStyle(fontSize: 18.sp)),
+              child: Text(
+                '🔍 Debug Firestore',
+                style: TextStyle(fontSize: 18.sp),
+              ),
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50.h),
                 backgroundColor: Colors.orange,

@@ -6,7 +6,6 @@ import 'package:flutter_firebase/views/student_screens/delete.dart'
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'controller/auth_controller.dart';
 import 'firebase_options.dart';
 import 'views/home_screen/home_page.dart';
 import 'views/student_screens/add.dart';
@@ -14,17 +13,23 @@ import 'views/student_screens/update.dart';
 import 'views/student_screens/view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'constants/supabase_key.dart';
+import 'services/simple_notification_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase (Auth + Firestore)
+  // Initialize Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Initialize Supabase (for storage only)
+  // Register background message handler
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  // Initialize Supabase
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
-  Get.put(AuthController());
+  // Initialize Notification Service
+  await SimpleNotificationService.initialize();
 
   runApp(MyApp());
 }

@@ -11,7 +11,7 @@ class DeleteStudentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Ensure controller is initialized
     final controller = Get.put(StudentController());
-    
+
     return Scaffold(
       appBar: AppBar(title: Text('Delete Student')),
       body: StreamBuilder<List<Student>>(
@@ -20,7 +20,7 @@ class DeleteStudentScreen extends StatelessWidget {
           if (snap.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
-          
+
           if (snap.hasError) {
             return Center(
               child: Column(
@@ -33,7 +33,7 @@ class DeleteStudentScreen extends StatelessWidget {
               ),
             );
           }
-          
+
           if (!snap.hasData || snap.data!.isEmpty) {
             return Center(
               child: Column(
@@ -46,7 +46,7 @@ class DeleteStudentScreen extends StatelessWidget {
               ),
             );
           }
-          
+
           final list = snap.data!;
           return ListView.builder(
             padding: EdgeInsets.all(20.w),
@@ -101,7 +101,7 @@ class DeleteStudentScreen extends StatelessWidget {
           );
         } catch (e) {
           Get.snackbar(
-            "Error", 
+            "Error",
             "Failed to delete student: $e",
             backgroundColor: Colors.redAccent,
             colorText: Colors.white,

@@ -12,7 +12,7 @@ class UpdateStudentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Ensure controller is initialized
     final controller = Get.put(StudentController());
-    
+
     return Scaffold(
       appBar: AppBar(title: Text('Update Student')),
       body: StreamBuilder<List<Student>>(
@@ -21,7 +21,7 @@ class UpdateStudentScreen extends StatelessWidget {
           if (snap.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
-          
+
           if (snap.hasError) {
             return Center(
               child: Column(
@@ -34,7 +34,7 @@ class UpdateStudentScreen extends StatelessWidget {
               ),
             );
           }
-          
+
           if (!snap.hasData || snap.data!.isEmpty) {
             return Center(
               child: Column(
@@ -47,7 +47,7 @@ class UpdateStudentScreen extends StatelessWidget {
               ),
             );
           }
-          
+
           final list = snap.data!;
           return ListView.builder(
             padding: EdgeInsets.all(20.w),

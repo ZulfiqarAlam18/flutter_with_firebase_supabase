@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 import '../models/student_model.dart';
 import '../services/storage_service.dart';
+import '../services/simple_notification_service.dart';
 
 class StudentController extends GetxController {
   static StudentController instance = Get.find();
@@ -11,11 +12,9 @@ class StudentController extends GetxController {
   final _db = FirebaseFirestore.instance;
 
   Stream<List<Student>> get students {
-    return _db
-        .collection('students')
-        .snapshots()
-        .map((snap) {
-          final students = snap.docs.map((doc) {
+    return _db.collection('students').snapshots().map((snap) {
+      final students =
+          snap.docs.map((doc) {
             try {
               return Student.fromDoc(doc);
             } catch (e) {
@@ -24,9 +23,9 @@ class StudentController extends GetxController {
               rethrow;
             }
           }).toList();
-          print('✅ Successfully parsed ${students.length} students');
-          return students;
-        });
+      print('✅ Successfully parsed ${students.length} students');
+      return students;
+    });
   }
 
   /// Upload image to Supabase Storage and get public URL
@@ -35,20 +34,31 @@ class StudentController extends GetxController {
   }
 
   Future<void> addStudent(String name, String roll, File image) async {
-    final id = Uuid().v4();
-    final url = await _uploadImage(image, id);
-    
-    final studentData = {
-      'id': id,
-      'name': name,
-      'roll': roll,  // Make sure this matches your Firestore field
-      'imageUrl': url,
-    };
-    
-    await _db.collection('students').doc(id).set(studentData);
-  }
+    try {
+      final id = Uuid().v4();
+      final url = await _uploadImage(image, id);
+      
+      final studentData = {
+        'id': id,
+        'name': name,
+        'roll': roll, // Make sure this matches your Firestore field
+        'imageUrl': url,
+      };
+      
+      await _db.collection('students').doc(id).set(studentData);
 
-  Future<void> deleteStudent(String id) async {
+      // Send notification after student is added successfully
+      await SimpleNotificationService.showStudentAddedNotification(
+        studentName: name,
+        rollNumber: roll,
+      );
+      
+      print('✅ Student added successfully: $name');
+    } catch (e) {
+      print('❌ Error adding student: $e');
+      rethrow; // Re-throw so UI can handle the error
+    }
+  }  Future<void> deleteStudent(String id) async {
     // Delete from Firestore first
     await _db.collection('students').doc(id).delete();
 
