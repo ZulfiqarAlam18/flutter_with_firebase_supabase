@@ -71,6 +71,28 @@ class SimpleNotificationService {
     print('✅ Notification service initialized successfully!');
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /// Handle notification tap
   static void _onNotificationTapped(NotificationResponse response) {
     print('👆 Local notification tapped');

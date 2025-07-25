@@ -113,9 +113,9 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             SizedBox(height: 32.h),
-            
+
             // Actions Grid
             Text(
               'Quick Actions',
@@ -125,9 +125,9 @@ class HomeScreen extends StatelessWidget {
                 color: Color(0xFF333333),
               ),
             ),
-            
+
             SizedBox(height: 16.h),
-            
+
             // Grid of Action Cards
             GridView.count(
               shrinkWrap: true,
@@ -167,9 +167,9 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             SizedBox(height: 24.h),
-            
+
             // Debug Section (Optional)
             Card(
               child: ListTile(
@@ -239,15 +239,11 @@ class HomeScreen extends StatelessWidget {
                   color: color.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Icon(
-                  icon,
-                  color: color,
-                  size: 24.sp,
-                ),
+                child: Icon(icon, color: color, size: 24.sp),
               ),
-              
+
               SizedBox(height: 12.h),
-              
+
               Text(
                 title,
                 textAlign: TextAlign.center,
@@ -257,16 +253,13 @@ class HomeScreen extends StatelessWidget {
                   color: Color(0xFF333333),
                 ),
               ),
-              
+
               SizedBox(height: 4.h),
-              
+
               Text(
                 subtitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 11.sp,
-                  color: Color(0xFF666666),
-                ),
+                style: TextStyle(fontSize: 11.sp, color: Color(0xFF666666)),
               ),
             ],
           ),

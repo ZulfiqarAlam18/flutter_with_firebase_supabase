@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 60.h),
-              
+
               // Logo/Icon
               Container(
                 width: 100.w,
@@ -43,26 +43,26 @@ class LoginScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              
+
               SizedBox(height: 32.h),
-              
+
               // Title
               Text(
                 "Welcome Back",
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
-              
+
               SizedBox(height: 8.h),
-              
+
               Text(
                 "Sign in to your account",
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Color(0xFF666666),
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(color: Color(0xFF666666)),
               ),
-              
+
               SizedBox(height: 48.h),
-              
+
               // Login Form Card
               Card(
                 child: Padding(
@@ -78,9 +78,9 @@ class LoginScreen extends StatelessWidget {
                           prefixIcon: Icon(Icons.email_outlined),
                         ),
                       ),
-                      
+
                       SizedBox(height: 20.h),
-                      
+
                       // Password Field
                       TextField(
                         controller: passwordController,
@@ -90,9 +90,9 @@ class LoginScreen extends StatelessWidget {
                           prefixIcon: Icon(Icons.lock_outline),
                         ),
                       ),
-                      
+
                       SizedBox(height: 32.h),
-                      
+
                       // Login Button
                       ElevatedButton(
                         onPressed: () {
@@ -114,9 +114,9 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               SizedBox(height: 24.h),
-              
+
               // Sign Up Link
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +137,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               SizedBox(height: 40.h),
             ],
           ),
