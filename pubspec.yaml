@@ -26,6 +26,7 @@ dependencies:
   path: ^1.9.1
   firebase_messaging: ^15.2.10
   flutter_local_notifications: ^19.3.1
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -40,3 +41,7 @@ flutter:
   assets:
     - assets/pictures/
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"
