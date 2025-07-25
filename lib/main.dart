@@ -15,6 +15,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'constants/supabase_key.dart';
 import 'services/simple_notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'controller/auth_controller.dart';
+import 'controller/student_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +32,10 @@ void main() async {
 
   // Initialize Notification Service
   await SimpleNotificationService.initialize();
+
+  // Register GetX Controllers
+  Get.put(AuthController());
+  Get.put(StudentController());
 
   runApp(MyApp());
 }

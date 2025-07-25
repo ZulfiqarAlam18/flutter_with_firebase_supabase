@@ -37,14 +37,14 @@ class StudentController extends GetxController {
     try {
       final id = Uuid().v4();
       final url = await _uploadImage(image, id);
-      
+
       final studentData = {
         'id': id,
         'name': name,
         'roll': roll, // Make sure this matches your Firestore field
         'imageUrl': url,
       };
-      
+
       await _db.collection('students').doc(id).set(studentData);
 
       // Send notification after student is added successfully
@@ -52,13 +52,15 @@ class StudentController extends GetxController {
         studentName: name,
         rollNumber: roll,
       );
-      
+
       print('✅ Student added successfully: $name');
     } catch (e) {
       print('❌ Error adding student: $e');
       rethrow; // Re-throw so UI can handle the error
     }
-  }  Future<void> deleteStudent(String id) async {
+  }
+
+  Future<void> deleteStudent(String id) async {
     // Delete from Firestore first
     await _db.collection('students').doc(id).delete();
 

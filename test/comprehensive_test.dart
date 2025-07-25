@@ -15,7 +15,9 @@ void main() {
       Get.put(StudentController());
     });
 
-    testWidgets('App should launch without crashing', (WidgetTester tester) async {
+    testWidgets('App should launch without crashing', (
+      WidgetTester tester,
+    ) async {
       // Build our app and trigger a frame
       await tester.pumpWidget(MyApp());
       await tester.pump();
@@ -36,13 +38,18 @@ void main() {
     });
 
     group('Navigation Tests', () {
-      testWidgets('Should have all required routes', (WidgetTester tester) async {
+      testWidgets('Should have all required routes', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(MyApp());
-        
+
         // Test that GetMaterialApp is configured with routes
         final app = tester.widget<GetMaterialApp>(find.byType(GetMaterialApp));
         expect(app.getPages, isNotNull);
-        expect(app.getPages!.length, greaterThan(5)); // Should have multiple routes
+        expect(
+          app.getPages!.length,
+          greaterThan(5),
+        ); // Should have multiple routes
       });
     });
 
