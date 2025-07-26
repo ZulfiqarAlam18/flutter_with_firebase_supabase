@@ -99,7 +99,7 @@ class MyApp extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  elevation: 2,
+                  elevation: 1,
                   textStyle: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
@@ -131,7 +131,7 @@ class MyApp extends StatelessWidget {
 
               // Card Theme
               cardTheme: CardThemeData(
-                elevation: 4,
+                elevation: 2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.r),
                 ),
